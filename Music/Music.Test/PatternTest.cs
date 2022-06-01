@@ -12,26 +12,6 @@ public class PatternTest
     {
     }
 
-    // [Test]
-    // public void EmptyTestPattern_SatisfiesAllPatterns()
-    // {
-    //     Pattern pattern = new Pattern
-    //     {
-    //         Syllables = new()
-    //         {
-    //             new()
-    //             {
-    //                 new() { Stress.Unstressed },
-    //             }
-    //         }
-    //     };
-    //     List<Stress> testPattern = new();
-
-    //     bool result = pattern.IsSatisfiedBy(testPattern);
-
-    //     Assert.That(result, Is.True);
-    // }
-
     [Test]
     public void SingleUnstressedSyllable_SatisfiesSingleUnstressedSyllablePattern()
     {
@@ -138,7 +118,6 @@ public class PatternTest
     }
 
     [Test]
-    [Ignore("Doesn't pass yet")]
     public void PatternMatcher_MatchesRealisticTestCase()
     {
         Pattern pattern = new Pattern

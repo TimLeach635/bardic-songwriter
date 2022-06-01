@@ -32,17 +32,35 @@ namespace Music.Song
 
         public static bool AreTheSame(IEnumerable<Stress> list1, IEnumerable<Stress> list2)
         {
-            return list1.Join(list2, a => a, a => a, (a, b) => a == b).All(a => a);
+            if (list1.Count() != list2.Count())
+            {
+                return false;
+            }
+
+            for (int i = 0; i < list1.Count(); i++)
+            {
+                if (list1.ElementAt(i) != list2.ElementAt(i))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
-        public static string Display(List<Stress> list)
+        public static string Display(IEnumerable<Stress> list)
         {
-            return $"Syllables: [{string.Join(", ", list.Select(s => s == Stress.Stressed ? "S" : "s"))}]";
+            return $"[{string.Join(", ", list.Select(s => s == Stress.Stressed ? "S" : "s"))}]";
         }
 
-        public static string Display(List<List<Stress>> list)
+        public static string Display(IEnumerable<IEnumerable<Stress>> list)
         {
-            return $"Syllable groups:\n[\n    {string.Join(",\n    ", list.Select(sl => Display(sl)))}\n]";
+            return $"[ {string.Join(", ", list.Select(sl => Display(sl)))} ]";
+        }
+
+        public static string Display(IEnumerable<IEnumerable<IEnumerable<Stress>>> list)
+        {
+            return $"[ {string.Join(", ", list.Select(sl => Display(sl)))} ]";
         }
 
         public bool IsSatisfiedBy(List<Stress> testSyllables)
@@ -59,8 +77,8 @@ namespace Music.Song
                     i. If the next N "unmatched" testSyllables match this syllable list:
                         A. Mark the next N "unmatched" testSyllables as "matched"
                         B. Mark this syllable list as "satisfied"
-                c. If no testSyllables were marked as "matched" during the above "for" loop:
-                    i. If there are no "matched" Pattern groups:
+                c. If no testSyllables were marked as "matched" during the above "for" loop OR if there are no "unsatisfied" Pattern groups but still "unmatched" syllables:
+                    i. If there are no "satisfied" Pattern groups:
                         A. Return FALSE. The test pattern does not satisfy this pattern.
                     ii. Identify the syllable list (length N) in the latest "satisfied" Pattern group
                         which was matched against the test pattern, and remove it from consideration in future steps
@@ -72,7 +90,8 @@ namespace Music.Song
             4. Return TRUE.
 
             */
-            Logger.Debug($"Testing \"{Display(testSyllables)}\"");
+            Logger.Debug($"Testing \"{Display(testSyllables)}\" against pattern:");
+            Logger.Debug(Display(Syllables));
 
             // 1.
             Logger.Debug("1. Mark all testSyllables as \"unmatched\", and all Pattern groups as \"unsatisfied\"");
@@ -83,7 +102,7 @@ namespace Music.Song
                 .ToList();
             Logger.Debug($"> nMatchedTestSyllables = {nMatchedTestSyllables}");
             Logger.Debug($"> nSatisfiedPatternGroups = {nSatisfiedPatternGroups}");
-            Logger.Debug($"> attemptedPatternLists = {attemptedPatternLists}");
+            Logger.Debug($"> attemptedPatternLists = {Display(attemptedPatternLists)}");
 
             // 2.
             Logger.Debug("2. While there are \"unmatched\" testSyllables:");
@@ -91,12 +110,14 @@ namespace Music.Song
             {
                 Logger.Debug("> Beginning test loop (there are still unmatched testSyllables)");
                 Logger.Debug($"> nMatchedTestSyllables ({nMatchedTestSyllables}) < testSyllables.Count ({testSyllables.Count})");
+                Logger.Debug($"> So far matched testSyllables {Display(testSyllables.Take(nMatchedTestSyllables))}");
+                Logger.Debug($">   against Pattern groups {Display(attemptedPatternLists.Take(nSatisfiedPatternGroups).SelectMany(patternList => patternList.Last()))}");
                 // 2.a.
                 Logger.Debug("2.a. Order the earliest \"unsatisfied\" Pattern group by length, with the longest first");
                 List<List<Stress>> nextUnsatisfiedGroup = Syllables[nSatisfiedPatternGroups]
-                    .OrderBy<List<Stress>, int>(list => list.Count)
                     // (2.c.ii.)
                     .Where(syllableList => !attemptedPatternLists[nSatisfiedPatternGroups].Any(attemptedList => AreTheSame(attemptedList, syllableList)))
+                    .OrderByDescending<List<Stress>, int>(list => list.Count)
                     .ToList();
                 Logger.Debug($"> nextUnsatisfiedGroup = {Display(nextUnsatisfiedGroup)}");
                 Logger.Debug($"> nextUnsatisfiedGroup.Count = {nextUnsatisfiedGroup.Count}");
@@ -108,10 +129,14 @@ namespace Music.Song
                 Logger.Debug($"> Looping through nextUnsatisfiedGroup (length {nextUnsatisfiedGroup.Count}):");
                 foreach (List<Stress> syllableList in nextUnsatisfiedGroup)
                 {
+                    List<Stress> nextNSyllables = testSyllables.Skip(nMatchedTestSyllables).Take(syllableList.Count).ToList();
+
                     Logger.Debug($"> syllableList = {Display(syllableList)}");
+                    Logger.Debug($"> nextNSyllables = {Display(nextNSyllables)}");
                     // 2.b.i.
-                    Logger.Debug("2.b.i. If the next N \"unmatched\" testSyllables match this syllable list:");
-                    if (AreTheSame(syllableList, testSyllables.Skip(nMatchedTestSyllables).Take(syllableList.Count)))
+                    Logger.Debug($"2.b.i. If the next N ({syllableList.Count}) \"unmatched\" testSyllables ({Display(nextNSyllables)}) match this syllable list ({Display(syllableList)}):");
+
+                    if (AreTheSame(syllableList, nextNSyllables))
                     {
                         Logger.Debug("> syllableList matches next testSyllables!");
                         // 2.b.i.A.
@@ -134,8 +159,18 @@ namespace Music.Song
                 }
 
                 // 2.c.
-                if (!didMatch)
+                if (!didMatch || (nSatisfiedPatternGroups == Syllables.Count && nMatchedTestSyllables < testSyllables.Count))
                 {
+                    if (!didMatch)
+                    {
+                        Logger.Debug("> Didn't match against any syllableList last loop");
+                    }
+                    else
+                    {
+                        Logger.Debug("> There are no more \"unsatisfied\" Pattern groups, but there are still \"unmatched\" testSyllables");
+                        Logger.Debug($"> (Matched {nMatchedTestSyllables} syllables from {Display(testSyllables)})");
+                    }
+
                     // 2.c.i.
                     if (nSatisfiedPatternGroups == 0)
                     {
