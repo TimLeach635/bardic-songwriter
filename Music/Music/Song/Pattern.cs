@@ -172,17 +172,28 @@ namespace Music.Song
                     }
 
                     // 2.c.i.
+                    Logger.Debug("2.c.i. If there are no \"satisfied\" Pattern groups:");
+                    Logger.Debug($"nSatisfiedPatternGroups = {nSatisfiedPatternGroups}");
                     if (nSatisfiedPatternGroups == 0)
                     {
                         // 2.c.i.A.
                         return false;
                     }
+                    
+                    // Reset the previously attempted pattern lists, as they could now all be valid
+                    attemptedPatternLists[nSatisfiedPatternGroups] = new();
 
+                    Logger.Debug("ii. Identify the syllable list (length N) in the latest \"satisfied\" Pattern group which was matched against the test pattern, and remove it from consideration in future steps");
+                    Logger.Debug("iii. Mark the latest \"satisfied\" Pattern group as \"unsatisfied\"");
+                    Logger.Debug("iv. Mark the latest N \"matched\" testSyllables as \"unmatched\"");
                     // 2.c.ii,iii
+                    Logger.Debug($"> Decrementing nSatisfiedPatternGroups (currently {nSatisfiedPatternGroups}) by 1");
                     nSatisfiedPatternGroups--;
                     List<Stress> lastSatisfiedSyllableList = attemptedPatternLists[nSatisfiedPatternGroups].Last();
+                    Logger.Debug($"> Last syllableList matched against the testSyllables was {Display(lastSatisfiedSyllableList)} (length {lastSatisfiedSyllableList.Count})");
                     
                     // 2.c.iv.
+                    Logger.Debug($"Decreasing nMatchedTestSyllables (currently {nMatchedTestSyllables}) by the length ({lastSatisfiedSyllableList.Count()}) of the last syllableList matched against it ({Display(lastSatisfiedSyllableList)})");
                     nMatchedTestSyllables -= lastSatisfiedSyllableList.Count();
                 }
             }

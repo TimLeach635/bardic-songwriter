@@ -179,4 +179,133 @@ public class PatternTest
 
         Assert.That(result, Is.True);
     }
+
+    [Test]
+    public void PatternMatcher_CanBacktrack()
+    {
+        Pattern pattern = new Pattern
+        {
+            Syllables = new()
+            {
+                new()
+                {
+                    new() { Stress.Stressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Stressed, Stress.Unstressed },
+                    new() { Stress.Stressed },
+                },
+                new()
+                {
+                    new() { Stress.Unstressed, Stress.Stressed },
+                },
+            }
+        };
+        List<Stress> testPattern = new()
+        {
+            Stress.Stressed, Stress.Unstressed, Stress.Unstressed, Stress.Stressed
+        };
+
+        bool result = pattern.IsSatisfiedBy(testPattern);
+
+        Assert.That(result, Is.True);
+    }
+
+    [Test]
+    public void PatternMatcher_CanBacktrackMultipleLevels()
+    {
+        Pattern pattern = new Pattern
+        {
+            Syllables = new()
+            {
+                new()
+                {
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed },
+                },
+                new()
+                {
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed },
+                },
+                new()
+                {
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed },
+                },
+                new()
+                {
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed },
+                },
+                new()
+                {
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed },
+                },
+                new()
+                {
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed },
+                },
+                new()
+                {
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed },
+                },
+                new()
+                {
+                    new() { Stress.Unstressed, Stress.Stressed },
+                },
+            }
+        };
+        List<Stress> testPattern = new()
+        {
+            Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Stressed
+        };
+
+        bool result = pattern.IsSatisfiedBy(testPattern);
+
+        Assert.That(result, Is.True);
+    }
 }
