@@ -328,4 +328,30 @@ public class PatternTest
 
         Assert.That(result, Is.False);
     }
+
+    [Test]
+    public void SimpleNegativeTestPattern_DoesNotMatch()
+    {
+        Pattern pattern = new Pattern
+        {
+            Syllables = new()
+            {
+                new()
+                {
+                    new() { Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed },
+                },
+                new()
+                {
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                    new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed, Stress.Unstressed },
+                },
+            }
+        };
+        List<Stress> testPattern = new() { Stress.Unstressed, Stress.Unstressed, Stress.Unstressed };
+
+        bool result = pattern.IsSatisfiedBy(testPattern);
+
+        Assert.That(result, Is.False);
+    }
 }
