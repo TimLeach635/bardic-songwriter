@@ -308,4 +308,24 @@ public class PatternTest
 
         Assert.That(result, Is.True);
     }
+
+    [Test]
+    public void EmptyTestPattern_DoesntMatchNonEmptyPattern()
+    {
+        Pattern pattern = new Pattern
+        {
+            Syllables = new()
+            {
+                new()
+                {
+                    new() { Stress.Unstressed },
+                },
+            }
+        };
+        List<Stress> testPattern = new();
+
+        bool result = pattern.IsSatisfiedBy(testPattern);
+
+        Assert.That(result, Is.False);
+    }
 }
