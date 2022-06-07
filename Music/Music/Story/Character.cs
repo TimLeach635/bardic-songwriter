@@ -3,9 +3,8 @@ using Music.Lyrics;
 
 namespace Music.Story
 {
-    public class Character
+    public class Character : Entity
     {
-        public Word Name { get; set; }
         public List<Word> PoeticNames { get; set; }
         public List<Word> Nouns { get; set; }
         public List<Word> Adjectives { get; set; }
