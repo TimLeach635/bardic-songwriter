@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using Music.Song;
 
 namespace Music.Story
 {
@@ -18,11 +18,22 @@ namespace Music.Story
     */
     public class Event
     {
-        public Morality Morality { get; }
-        public Action Action { get; }
+        public Morality Morality { get; set; }
+        public Action Action { get; set; }
         // The entity who performed the action
-        public Entity Subject { get; }
+        public Entity Subject { get; set; }
         // The entity to whom the action was performed
-        public Entity Object { get; }
+        public Entity Object { get; set; }
+        // The entity with which the action was performed
+        public Entity Implement { get; set; }
+
+        public string MatchToPattern(Pattern pattern)
+        {
+            if (Implement is not null)
+            {
+                return $"{Subject.Noun} {Action.Verb.PastParticiple} {Object.Noun} with {Implement.Noun}";
+            }
+            return $"{Subject.Noun} {Action.Verb.PastParticiple} {Object.Noun}";
+        }
     }
 }

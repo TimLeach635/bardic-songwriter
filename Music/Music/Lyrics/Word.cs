@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Music.Lyrics
@@ -10,7 +11,7 @@ namespace Music.Lyrics
         {
             get
             {
-                switch(Syllables.Count)
+                switch (Syllables.Count)
                 {
                     case 1:
                         return Foot.SingleSyllable;
@@ -42,6 +43,31 @@ namespace Music.Lyrics
         {
             Spelling = spelling;
             Syllables = syllables;
+        }
+
+        public Word(string spelling, string syllables)
+        {
+            Spelling = spelling;
+            Syllables = new();
+
+            foreach (char character in syllables)
+            {
+                switch (character)
+                {
+                    case 'S':
+                        Syllables.Add(Stress.Stressed);
+                        break;
+                    case 's':
+                        Syllables.Add(Stress.Unstressed);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(
+                            "syllables",
+                            syllables,
+                            "All characters in the string \"syllables\" must be either a lowercase or uppercase \"S\""
+                        );
+                }
+            }
         }
 
         public override string ToString()

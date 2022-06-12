@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using Music.Lyrics;
 
 namespace Music.Story
 {
-    public abstract class Entity
+    public class Entity
     {
-        public Word Name { get; set; }
+        public virtual Word Noun { get; set; }
+
+        public List<Quality> Qualities { get; set; }
     }
 }
