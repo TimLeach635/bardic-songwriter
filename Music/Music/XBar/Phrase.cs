@@ -1,35 +1,30 @@
-using Music.XBar.Categories;
+using System.Collections.Generic;
+using Music.Lyrics;
 
 namespace Music.XBar
 {
     public class Phrase
     {
-        public virtual Lexeme Head { get; }
-        public Phrase Specifier { get; }
-        public Phrase Complement { get; }
-        public Phrase Adjunct { get; }
+        public Lexeme Head { get; set; }
+        public Phrase Specifier { get; set; }
+        public Phrase Complement { get; set; }
+        public ICollection<Phrase> Adjuncts { get; set; }
+        public Category Category => Head.Category;
 
         public Phrase(Lexeme head, Phrase specifier, Phrase complement)
         {
             Head = head;
             Specifier = specifier;
             Complement = complement;
+            Adjuncts = new List<Phrase>();
         }
 
-        public Phrase(Lexeme head, Phrase specifier, Phrase complement, Phrase adjunct)
+        public Phrase(Lexeme head, Phrase specifier, Phrase complement, ICollection<Phrase> adjuncts)
         {
             Head = head;
             Specifier = specifier;
             Complement = complement;
-            Adjunct = adjunct;
+            Adjuncts = adjuncts;
         }
-    }
-
-    public class Phrase<T> : Phrase where T : Lexeme
-    {
-        public override T Head { get; }
-
-        public Phrase(T head, Phrase specifier, Phrase complement) : base(head, specifier, complement) { }
-        public Phrase(T head, Phrase specifier, Phrase complement, Phrase adjunct) : base(head, specifier, complement, adjunct) { }
     }
 }
