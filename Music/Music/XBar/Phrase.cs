@@ -9,7 +9,7 @@ namespace Music.XBar
         public Phrase Specifier { get; set; }
         public Phrase Complement { get; set; }
         public ICollection<Phrase> Adjuncts { get; set; }
-        public Category Category => Head.Category;
+        public LexemeCategory Category => Head.Category;
 
         public Phrase(Lexeme head, Phrase specifier, Phrase complement)
         {

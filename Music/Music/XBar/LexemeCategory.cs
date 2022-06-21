@@ -1,6 +1,6 @@
 namespace Music.XBar
 {
-    public enum Category
+    public enum LexemeCategory
     {
         Noun,
         Verb,
