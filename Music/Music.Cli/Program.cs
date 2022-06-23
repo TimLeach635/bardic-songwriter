@@ -16,7 +16,11 @@ namespace Music.Cli
             Character ang = new Character { Name = new Word("Ang", "S") };
             Entity bow = new Entity { Noun = new Word("bow", "S") };
 
-            CharacterGroup adventurers = new CharacterGroup { Characters = new() { thorg, ben, ang } };
+            CharacterGroup adventurers = new CharacterGroup
+            {
+                Noun = new Word("the group", "sS"),
+                Characters = new() { thorg, ben, ang }
+            };
 
             Monster snake = new Monster(new Word("snake", "S"));
             Entity fangs = new Entity { Noun = new Word("fangs", "S") };
@@ -33,7 +37,8 @@ namespace Music.Cli
                     {
                         Verb = new Verb
                         {
-                            PastParticiple = new Word("went to", "sS"),
+                            Base = new Word("go to", "Ss"),
+                            PastParticiple = new Word("went to", "Ss"),
                         },
                     },
                     Object = forest,
@@ -45,6 +50,7 @@ namespace Music.Cli
                     {
                         Verb = new Verb
                         {
+                            Base = new Word("bite", "S"),
                             PastParticiple = new Word("bit", "S"),
                         },
                     },
@@ -58,6 +64,7 @@ namespace Music.Cli
                     {
                         Verb = new Verb
                         {
+                            Base = new Word("heal", "S"),
                             PastParticiple = new Word("healed", "S"),
                         },
                     },
@@ -71,7 +78,8 @@ namespace Music.Cli
                     {
                         Verb = new Verb
                         {
-                            PastParticiple = new Word("attacked", "S"),
+                            Base = new Word("attack", "sS"),
+                            PastParticiple = new Word("attacked", "sS"),
                         },
                     },
                     Object = troll,
@@ -81,7 +89,7 @@ namespace Music.Cli
 
             foreach (Event storyEvent in story.Events)
             {  
-                System.Console.WriteLine(storyEvent.MatchToPattern(null));
+                System.Console.WriteLine(Converter.Convert(storyEvent));
             }
         }
     }

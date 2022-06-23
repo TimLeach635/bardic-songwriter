@@ -12,5 +12,10 @@ namespace Music.XBar
             Word = word;
             Category = category;
         }
+
+        public override string ToString()
+        {
+            return (Word is not null ? Word.ToString() : "Ø");
+        }
     }
 }
