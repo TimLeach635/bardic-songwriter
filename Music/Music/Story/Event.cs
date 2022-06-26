@@ -19,7 +19,10 @@ namespace Music.Story
 
         public string GenerateLyrics()
         {
-            return $"{_subject.Noun} {_verb} {_object.Noun}";
+            string capitalisedSubject =
+                _subject.Noun.ToString().Substring(0, 1).ToUpper()
+                + _subject.Noun.ToString().Substring(1);
+            return $"{capitalisedSubject} {_verb} {_object.Noun}";
         }
     }
 }

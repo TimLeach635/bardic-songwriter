@@ -2,16 +2,16 @@ namespace Music.Lyrics
 {
     public class Noun
     {
-        public string Word { get; }
+        private string _word;
 
         public Noun(string word)
         {
-            Word = word;
+            _word = word;
         }
 
         public override string ToString()
         {
-            return Word;
+            return _word;
         }
     }
 }
