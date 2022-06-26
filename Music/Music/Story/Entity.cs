@@ -5,8 +5,13 @@ namespace Music.Story
 {
     public class Entity
     {
-        public virtual Word Noun { get; set; }
+        public Noun Noun { get; }
 
-        public List<Quality> Qualities { get; set; }
+        public Entity(Noun noun)
+        {
+            Noun = noun;
+        }
+
+        public Entity(string noun) : this(new Noun(noun)) { }
     }
 }

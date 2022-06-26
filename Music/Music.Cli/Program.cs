@@ -9,79 +9,25 @@ namespace Music.Cli
         static void Main(string[] args)
         {
 
-            Character thorg = new Character { Name = new Word("Thorg", "S") };
-            Entity axe = new Entity { Noun = new Word("axe", "S") };
-            Character ben = new Character { Name = new Word("Ben", "S") };
-            Entity staff = new Entity { Noun = new Word("staff", "S") };
-            Character ang = new Character { Name = new Word("Ang", "S") };
-            Entity bow = new Entity { Noun = new Word("bow", "S") };
+            Entity thorg = new Entity("Thorg");
+            Entity ben = new Entity("Ben");
+            Entity ang = new Entity("Ang");
 
-            CharacterGroup adventurers = new CharacterGroup { Characters = new() { thorg, ben, ang } };
+            Entity snake = new Entity("the snake");
+            Entity troll = new Entity("the troll");
 
-            Monster snake = new Monster(new Word("snake", "S"));
-            Entity fangs = new Entity { Noun = new Word("fangs", "S") };
-            Monster troll = new Monster(new Word("troll", "S"));
-            Entity club = new Entity { Noun = new Word("club", "S") };
-
-            Entity forest = new Entity { Noun = new Word("forest", "Ss") };
+            Entity forest = new Entity("the forest");
 
             StoryEvents story = new StoryEvents(new() {
-                new Event
-                {
-                    Subject = adventurers,
-                    Action = new Action
-                    {
-                        Verb = new Verb
-                        {
-                            PastParticiple = new Word("went to", "sS"),
-                        },
-                    },
-                    Object = forest,
-                },
-                new Event
-                {
-                    Subject = snake,
-                    Action = new Action
-                    {
-                        Verb = new Verb
-                        {
-                            PastParticiple = new Word("bit", "S"),
-                        },
-                    },
-                    Object = thorg,
-                    Implement = fangs,
-                },
-                new Event
-                {
-                    Subject = ben,
-                    Action = new Action
-                    {
-                        Verb = new Verb
-                        {
-                            PastParticiple = new Word("healed", "S"),
-                        },
-                    },
-                    Object = thorg,
-                    Implement = staff,
-                },
-                new Event
-                {
-                    Subject = thorg,
-                    Action = new Action
-                    {
-                        Verb = new Verb
-                        {
-                            PastParticiple = new Word("attacked", "S"),
-                        },
-                    },
-                    Object = troll,
-                    Implement = axe,
-                },
+                new Event(new Entity("the heroes"), new ThirdPersonSimplePastVerb("went to"), forest),
+                new Event(snake, new ThirdPersonSimplePastVerb("bit"), thorg),
+                new Event(ben, new ThirdPersonSimplePastVerb("healed"), thorg),
+                new Event(thorg, new ThirdPersonSimplePastVerb("attacked"), troll),
             });
 
             foreach (Event storyEvent in story.Events)
             {  
-                System.Console.WriteLine(storyEvent.MatchToPattern(null));
+                System.Console.WriteLine(storyEvent.GenerateLyrics());
             }
         }
     }

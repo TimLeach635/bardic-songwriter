@@ -1,39 +1,25 @@
-using Music.Song;
+using Music.Lyrics;
 
 namespace Music.Story
 {
-    /**
-    An "event" is the top level thing taken from the adventure.
-    The rationale for this is that the song is always supposed
-    to describe the adventure in a storytelling way, so the actual
-    events that occured are the most important things.
-    Each event has a value judgment associated with it ("good" or "bad")
-    to aid our choice of the words we use to describe the event.
-    For example, a hero attacking a monster is a good thing, so we might say
-    "The valiant adventurer cleft the monster in twain", but
-    a monster attacking a hero is a bad thing, so we might instead say
-    "The hideous monster wounded our brave hero with its disgusting claws".
-    We're writing bardic songs here, so we can genuinely simplify
-    it down to "good" and "bad"!
-    */
     public class Event
     {
-        public Morality Morality { get; set; }
-        public Action Action { get; set; }
         // The entity who performed the action
-        public Entity Subject { get; set; }
+        private Entity _subject;
+        private ThirdPersonSimplePastVerb _verb;
         // The entity to whom the action was performed
-        public Entity Object { get; set; }
-        // The entity with which the action was performed
-        public Entity Implement { get; set; }
+        private Entity _object;
 
-        public string MatchToPattern(Pattern pattern)
+        public Event(Entity verbSubject, ThirdPersonSimplePastVerb verb, Entity verbObject)
         {
-            if (Implement is not null)
-            {
-                return $"{Subject.Noun} {Action.Verb.PastParticiple} {Object.Noun} with {Implement.Noun}";
-            }
-            return $"{Subject.Noun} {Action.Verb.PastParticiple} {Object.Noun}";
+            _subject = verbSubject;
+            _verb = verb;
+            _object = verbObject;
+        }
+
+        public string GenerateLyrics()
+        {
+            return $"{_subject.Noun} {_verb} {_object.Noun}";
         }
     }
 }
