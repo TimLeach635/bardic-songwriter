@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <PackageId>BardicSongwriter</PackageId>
+    <Version>0.0.1</Version>
+    <Authors>Tim Leach, Matt Barnfield</Authors>
+    <Title>Bardic Songwriter</Title>
+    <Description>A library for generating song lyrics from game events</Description>
+    <RepositoryUrl>https://github.com/TimLeach635/bardic-songwriter</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
