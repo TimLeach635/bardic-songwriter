@@ -9,23 +9,24 @@ namespace Music.Cli
         static void Main(string[] args)
         {
 
-            Entity thorg = new Entity("Thorg");
-            Entity ben = new Entity("Ben");
-            Entity ang = new Entity("Ang");
+            StoryEntity thorg = new StoryEntity("Thorg");
+            StoryEntity ben = new StoryEntity("Ben");
+            StoryEntity ang = new StoryEntity("Ang");
 
-            Entity snake = new Entity("the snake");
-            Entity troll = new Entity("the troll");
+            StoryEntity snake = new StoryEntity("the snake");
+            StoryEntity troll = new StoryEntity("the troll");
 
-            Entity forest = new Entity("the forest");
+            StoryEntity forest = new StoryEntity("the forest");
 
-            StoryEvents story = new StoryEvents(new() {
-                new Event(new Entity("the heroes"), new ThirdPersonSimplePastVerb("went to"), forest),
-                new Event(snake, new ThirdPersonSimplePastVerb("bit"), thorg),
-                new Event(ben, new ThirdPersonSimplePastVerb("healed"), thorg),
-                new Event(thorg, new ThirdPersonSimplePastVerb("attacked"), troll),
-            });
+            List<StoryEvent> story = new()
+            {
+                new StoryEvent(new StoryEntity("the heroes"), new ThirdPersonSimplePastVerb("went to"), forest),
+                new StoryEvent(snake, new ThirdPersonSimplePastVerb("bit"), thorg),
+                new StoryEvent(ben, new ThirdPersonSimplePastVerb("healed"), thorg),
+                new StoryEvent(thorg, new ThirdPersonSimplePastVerb("attacked"), troll),
+            };
 
-            foreach (Event storyEvent in story.Events)
+            foreach (StoryEvent storyEvent in story)
             {  
                 System.Console.WriteLine(storyEvent.GenerateLyrics());
             }

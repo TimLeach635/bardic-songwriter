@@ -3,17 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>BardicSongwriter</PackageId>
-    <Version>0.0.2</Version>
+    <Version>0.0.4-alpha</Version>
     <Authors>Tim Leach, Matt Barnfield</Authors>
     <Title>Bardic Songwriter</Title>
     <Description>A library for generating song lyrics from game events</Description>
     <RepositoryUrl>https://github.com/TimLeach635/bardic-songwriter</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+    <PackageReleaseNotes>Change class name "Event" to "StoryEvent"</PackageReleaseNotes>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="NLog.Extensions.Logging" Version="5.0.0" />
-  </ItemGroup>
 
 </Project>

@@ -2,15 +2,15 @@ using Music.Lyrics;
 
 namespace Music.Story
 {
-    public class Event
+    public class StoryEvent
     {
         // The entity who performed the action
-        private Entity _subject;
+        private StoryEntity _subject;
         private ThirdPersonSimplePastVerb _verb;
         // The entity to whom the action was performed
-        private Entity _object;
+        private StoryEntity _object;
 
-        public Event(Entity verbSubject, ThirdPersonSimplePastVerb verb, Entity verbObject)
+        public StoryEvent(StoryEntity verbSubject, ThirdPersonSimplePastVerb verb, StoryEntity verbObject)
         {
             _subject = verbSubject;
             _verb = verb;
